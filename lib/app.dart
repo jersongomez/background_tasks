@@ -19,13 +19,20 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
   }
 
   static int delayMessage(int seconds) {
+    print("************************************");
+    print("delayed on -> ${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}");
     sleep(Duration(seconds: seconds));
-    print("delayed for ${seconds}, ${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}");
+    print("delayed off -> ${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}");
     return seconds;
   }
 
   Future<int> spawnSeconds(int seconds) async {
-    return await compute(delayMessage, seconds);
+    var delayedSeconds = await compute(delayMessage, seconds);
+    return delayedSeconds;
+  }
+
+  void printTimer() async {
+    print(await spawnSeconds(2));
   }
 
   @override
@@ -33,7 +40,8 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          spawnSeconds(2);
+          // please check one after the other
+          printTimer();
 //          print(delayMessage(2));
         },
         child: AnimatedBuilder(
