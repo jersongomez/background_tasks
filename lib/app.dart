@@ -9,6 +9,7 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> with SingleTickerProviderStateMixin {
   AnimationController _controller;
+  int _secondsTracker = 0;
 
   @override
   void initState() {
@@ -20,9 +21,11 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
 
   static int delayMessage(int seconds) {
     print("************************************");
-    print("delayed on -> ${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}");
+    print(
+        "delayed on -> ${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}");
     sleep(Duration(seconds: seconds));
-    print("delayed off -> ${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}");
+    print(
+        "delayed off -> ${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}");
     return seconds;
   }
 
@@ -32,12 +35,21 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
   }
 
   void printTimer() async {
-    print(await spawnSeconds(2));
+    _secondsTracker += await spawnSeconds(2);
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: Center(
+        child: Container(
+          child: Text(
+            _secondsTracker.toString(),
+            style: TextStyle(fontSize: 150),
+          ),
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // please check one after the other
